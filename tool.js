@@ -3,6 +3,16 @@ console.log("🔍 Inizio chiamate di controllo...");
 
 const csrfToken = window.Game.csrfToken;
 const townId = window.Game.townId;
+const playerId = window.Game.player_id;
+const worldId = window.Game.world_id;
+
+let worldName = "";
+
+switch (worldId) {
+  case "it116":
+    worldName = "La Canea";
+}
+
 const json = {
   model_url: "PremiumExchange",
   action_name: "read",
@@ -19,12 +29,11 @@ const headers = {
   "User-Agent":
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
   "X-Requested-With": "XMLHttpRequest",
-  Referer:
-    "https://it116.grepolis.com/game/index?login=1&p=848934474&ts=1730752741",
+  Referer: `https://${worldId}.grepolis.com/game/index?login=1&p=${playerId}&ts=1730752741`,
 };
 const credentials = "include";
 
-const url = `https://it116.grepolis.com/game/frontend_bridge?town_id=${townId}&action=execute&h=${csrfToken}&json=${jsonString}&_=${Date.now()}`;
+const url = `https://${worldId}.grepolis.com/game/frontend_bridge?town_id=${townId}&action=execute&h=${csrfToken}&json=${jsonString}&_=${Date.now()}`;
 
 const commonDiscordUrl =
   "https://discord.com/api/webhooks/1303320171439718410/t-3tc91Bq5-zzecQ-tmixOoD1Sb2CtHDJMpV_FMZfg0ekukcKApB_nniueCWHhd48FCk";
@@ -78,7 +87,7 @@ const fetchData = () => {
       const stoneName = "Pietra";
 
       if (availableIron > 500 && !notifiedIron) {
-        let message = `📦@everyone Coglione muoviti stanno sgoldando **${ironName}** nel mare **${ocean}**:\n`;
+        let message = `📦@everyone Coglione muoviti stanno sgoldando **${ironName}** nel mare **${ocean}** su **${worldName}**:\n`;
         message += `Argento sgoldato: **${availableIron}**\n`;
         notifyDiscord(message);
         notifiedIron = true;
@@ -87,7 +96,7 @@ const fetchData = () => {
       }
 
       if (availableWood > 500 && !notifiedWood) {
-        let message = `📦@everyone Coglione muoviti stanno sgoldando **${woodName}** nel mare **${ocean}**:\n`;
+        let message = `📦@everyone Coglione muoviti stanno sgoldando **${woodName}** nel mare **${ocean}** su **${worldName}**:\n`;
         message += `Legno sgoldato: **${availableWood}**\n`;
         notifyDiscord(message);
         notifiedWood = true;
@@ -96,7 +105,7 @@ const fetchData = () => {
       }
 
       if (availableStone > 500 && !notifiedStone) {
-        let message = `📦@everyone Coglione muoviti stanno sgoldando **${stoneName}** nel mare **${ocean}**:\n`;
+        let message = `📦@everyone Coglione muoviti stanno sgoldando **${stoneName}** nel mare **${ocean}** su **${worldName}**:\n`;
         message += `Pietra sgoldata: **${availableStone}**\n`;
         notifyDiscord(message);
         notifiedStone = true;
