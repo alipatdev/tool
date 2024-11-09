@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OroColato
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1
+// @version      1.3.2
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/alipatdev/tool/refs/heads/main/tool.js
@@ -56,12 +56,12 @@
     },
     unselectedColor: "background-color: rgba(0, 0, 198, 0.3);",
     selectedColor: "background-color: rgba(0, 161, 56, 0.5);",
+    citiesListeners: new Map(),
   };
   // #endregion
 
   // #region Utils
   const Utils = {
-    citiesListeners: new Map(),
     getWorldName: () => {
       switch (Config.worldId) {
         case "it112":
@@ -124,7 +124,7 @@
         });
     },
     hasCityWithOcean: (oceanValue) => {
-      for (const value of citiesListeners.values()) {
+      for (const value of Config.citiesListeners.values()) {
         if (value.ocean === oceanValue) {
           return true;
         }
@@ -134,19 +134,19 @@
     hasCityWithId: (townId) => {
       const townIdStr = String(townId);
 
-      if (citiesListeners.has(townIdStr)) {
-        return citiesListeners.get(townIdStr).selected;
+      if (Config.citiesListeners.has(townIdStr)) {
+        return Config.citiesListeners.get(townIdStr).selected;
       }
       return false;
     },
     setCitySelected: (cityId, selected, ocean) => {
       const cityIdStr = String(cityId);
 
-      if (!citiesListeners.has(cityIdStr)) {
+      if (!Config.citiesListeners.has(cityIdStr)) {
         return;
       }
 
-      const city = citiesListeners.get(cityIdStr);
+      const city = Config.citiesListeners.get(cityIdStr);
 
       if (city) {
         city.selected = selected;
@@ -158,7 +158,7 @@
           city.stop();
         }
 
-        citiesListeners.set(cityIdStr, city);
+        Config.citiesListeners.set(cityIdStr, city);
       } else {
         console.log("L'oggetto city è undefined");
       }
