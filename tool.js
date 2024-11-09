@@ -14,6 +14,8 @@
 (function () {
   "use strict";
 
+  console.log("OroColato enabled.");
+
   // #region Data configuration
   const Config = {
     csrfToken: window.Game.csrfToken,
