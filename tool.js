@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OroColato
 // @namespace    http://tampermonkey.net/
-// @version      1.3.2
+// @version      1.3.4
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/alipatdev/tool/refs/heads/main/tool.js
@@ -175,6 +175,74 @@
       </div>`;
       superPoint.appendChild(newDiv);
     },
+    showWindow: () => {
+      $("body").append(`
+        <div class="window_curtain ui-front" style="height: 919px; z-index: 1004;">
+
+<div id="window_c2268" class="js-window-main-container classic_window domination  " style="position: absolute; width: 770px; height: 570px; min-width: 150px; min-height: 200px; margin-top: 0px; inset: 194px auto auto 495px; margin-left: 0px;">
+	<div class="wnd_border_b"></div>
+	<div class="wnd_border_l"></div>
+	<div class="wnd_border_r"></div>
+	<div class="corner_tl"></div>
+	<div class="corner_tr"></div>
+	<div class="corner_bl"></div>
+	<div class="corner_br"></div>
+	<div class="wnd_border_t js-wnd-buttons">
+		<div class="title" unselectable="on" style="width: 0px;">ORO COLATO</div>
+		<div class="js-window-move window_move_container"></div>
+		<div class="buttons_container">
+			
+			
+				<div class="btn_wnd minimize" style="display:block"></div>
+				<div class="btn_wnd maximize" style="display:none"></div>
+			
+			
+				<div class="btn_wnd close"></div>
+			
+		</div>
+		
+	</div>
+	<div class="filler"></div>
+	<div class="filler window_background"></div>
+	<div class="window_content js-window-content"><div class="domination_info post_domination">
+    <div class="progress_wrapper" style="display: flex; align-items: center; justify-content: center;"><div class="progress_title" style="">CONFIGURAZIONE<br>ORO COLATO</div>
+<br>
+</div>
+    <div class="info_wrapper js-scrollbar-viewport viewport scrollbar_not_active">
+	<div class="scrollbar skinable-scrollbar js-sb-3 vertical red" style="display: none;">
+		<div class="scrollbar-arrow1 js-sb-arrow1 disabled"></div>
+		<div class="scrollbar-arrow2 js-sb-arrow2"></div>
+		<div class="scrollbar-slider-container js-sb-slider-container">
+			<div class="skinable-scrollbar-background">
+				<div class="skinable-scrollbar-background-top"></div>
+				<div class="skinable-scrollbar-background-center"></div>
+				<div class="skinable-scrollbar-background-bottom"></div>
+			</div>
+			<div class="scrollbar-slider js-sb-slider" style="height: 299px; transform: translate(0px, -299px);">
+				<div class="skinable-scrollbar-slider-top"></div>
+				<div class="skinable-scrollbar-slider-center"></div>
+				<div class="skinable-scrollbar-slider-bottom"></div>
+			</div>
+		</div>
+	</div>
+
+        <div class="js-scrollbar-content" style="position: relative; overflow: visible; transform: translate(0px);">
+            
+            
+            <div class="footer">
+  <div>
+    <span>Controllare il mercato in tutti mari</span>
+  </div>
+</div>
+        </div>
+    </div>
+</div></div>
+</div>
+</div>`);
+    },
+    closeOcwWindow: () => {
+      $("body").remove("#ocw");
+    },
     showAlert: (alertType) => {
       $("#human_message").removeClass("success_msg");
       $("#human_message").removeClass("error_msg");
@@ -202,62 +270,6 @@
         "background-color",
         isSelected ? `${Config.selectedColor}` : `${Config.unselectedColor}`
       );
-    },
-    onButtonClick: () => {
-      $(document).on("click", "#oro_colato", () => {
-        const townName = window.Game.townName;
-        let ocean = 0;
-
-        $('li.profile.main_menu_item[data-option-id="profile"]').click();
-
-        setTimeout(() => {
-          $(`a.gp_town_link:contains(${townName})`).click();
-
-          setTimeout(() => {
-            $("#info").click();
-
-            setTimeout(() => {
-              const targetLi = $("li.odd").filter(function () {
-                return $(this).text().includes("Mare:");
-              });
-
-              const text = targetLi.text().trim();
-              const number = text.match(/\d+/);
-
-              if (number) {
-                ocean = number[0];
-
-                $(".icon_right.icon_type_speed.ui-dialog-titlebar-close").each(
-                  function (index) {
-                    setTimeout(() => {
-                      $(this).click();
-                    }, index * 351);
-                  }
-                );
-
-                setTimeout(() => {
-                  const selectedCityId = window.Game.townId;
-                  if (Utils.hasCityWithId(selectedCityId)) {
-                    Utils.setCitySelected(selectedCityId, false, 0);
-                    showAlert(AlertType.REMOVED);
-                  } else {
-                    if (Utils.hasCityWithOcean(ocean)) {
-                      showAlert(AlertType.ERROR);
-                    } else {
-                      Utils.setCitySelected(selectedCityId, true, ocean);
-                      showAlert(AlertType.SUCCESS);
-                    }
-                  }
-
-                  changeColor(selectedCityId);
-                }, 300);
-              } else {
-                console.log("Polis ID Number not found.");
-              }
-            }, 503);
-          }, 752);
-        }, 709);
-      });
     },
     onCitySwitch: () => {
       $(document).on("click", ".button_arrow", () => {
@@ -292,14 +304,71 @@
           );
 
           names.forEach((cityId) => {
-            Utils.citiesListeners.set(cityId, new City(cityId, 0));
+            Config.citiesListeners.set(cityId, new City(cityId, 0));
           });
         });
 
         MainFunctions.dropdownClick();
       }, 500);
 
-      console.log(Utils.citiesListeners);
+      console.log(Config.citiesListeners);
+    },
+    onButtonClick: () => {
+      $(document).on("click", "#oro_colato", () => {
+        Utils.showWindow();
+        // const townName = window.Game.townName;
+        // let ocean = 0;
+
+        // $('li.profile.main_menu_item[data-option-id="profile"]').click();
+
+        // setTimeout(() => {
+        //   $(`a.gp_town_link:contains(${townName})`).click();
+
+        //   setTimeout(() => {
+        //     $("#info").click();
+
+        //     setTimeout(() => {
+        //       const targetLi = $("li.odd").filter(function () {
+        //         return $(this).text().includes("Mare:");
+        //       });
+
+        //       const text = targetLi.text().trim();
+        //       const number = text.match(/\d+/);
+
+        //       if (number) {
+        //         ocean = number[0];
+
+        //         $(".icon_right.icon_type_speed.ui-dialog-titlebar-close").each(
+        //           function (index) {
+        //             setTimeout(() => {
+        //               $(this).click();
+        //             }, index * 351);
+        //           }
+        //         );
+
+        //         setTimeout(() => {
+        //           const selectedCityId = window.Game.townId;
+        //           if (Utils.hasCityWithId(selectedCityId)) {
+        //             Utils.setCitySelected(selectedCityId, false, 0);
+        //             Utils.showAlert(Config.AlertType.REMOVED);
+        //           } else {
+        //             if (Utils.hasCityWithOcean(ocean)) {
+        //               Utils.showAlert(Config.AlertType.ERROR);
+        //             } else {
+        //               Utils.setCitySelected(selectedCityId, true, ocean);
+        //               Utils.showAlert(Config.AlertType.SUCCESS);
+        //             }
+        //           }
+
+        //           Utils.changeColor(selectedCityId);
+        //         }, 300);
+        //       } else {
+        //         console.log("Polis ID Number not found.");
+        //       }
+        //     }, 503);
+        //   }, 752);
+        // }, 709);
+      });
     },
   };
   // #endregion
@@ -502,9 +571,10 @@
 
   setTimeout(() => {
     MainFunctions.getPolisIds();
+    MainFunctions.onButtonClick();
 
     Utils.getWorldName();
-    Utils.onButtonClick();
+    Utils.closeOcwWindow();
 
     Observers.polisTitleObserver.initialize();
     Observers.captchaObserver.initalize();
