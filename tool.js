@@ -502,7 +502,9 @@
 
   setTimeout(() => {
     MainFunctions.getPolisIds();
+
     Utils.getWorldName();
+    Utils.onButtonClick();
 
     Observers.polisTitleObserver.initialize();
     Observers.captchaObserver.initalize();
