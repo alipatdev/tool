@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OroColato
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/alipatdev/tool/refs/heads/main/tool.js
@@ -13,8 +13,6 @@
 
 (function () {
   "use strict";
-
-  console.log("OroColato enabled.");
 
   // #region Data configuration
   const Config = {
