@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         OroColato
 // @namespace    http://tampermonkey.net/
-// @version      1.3.0
+// @version      1.3.1
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/alipatdev/tool/refs/heads/main/tool.js
